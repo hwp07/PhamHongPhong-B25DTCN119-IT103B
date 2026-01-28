@@ -1,4 +1,4 @@
-let book = prompt("Nhập tên sách: ").toUpperCase();
+let book = prompt("Nhập tên sách: ").trim().toUpperCase();
 console.log("Tên sách: " + book);
 
 let author = prompt("Nhập tên tác giả: ").toUpperCase();
@@ -15,3 +15,4 @@ let bookId = `${author.slice(0, 3)}${year}-${Math.floor(Math.random() * 1000) + 
 console.log("Mã sách: " + bookId);
 
 console.log("Ngăn kệ gợi ý: " + (Math.floor(Math.random() * 10) + 1));
+
