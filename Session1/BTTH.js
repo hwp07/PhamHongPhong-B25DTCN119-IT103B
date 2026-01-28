@@ -1,18 +1,17 @@
-let code_book = prompt("Nhập mã sách: ").trim().toUpperCase();
-let book_id = author + "-" + book + "-";
-console.log("Mã sách: " + book_id);
-
-let book = prompt("Nhập tên sách: ").toUpperCase;
+let book = prompt("Nhập tên sách: ").toUpperCase();
 console.log("Tên sách: " + book);
 
-let author = prompt("Nhập tên tác giả: ");
+let author = prompt("Nhập tên tác giả: ").toUpperCase();
 console.log("Tên tác giả: " + author);
 
-let year = prompt("Nhập năm xuất bản: ");
+let year = +prompt("Nhập năm xuất bản: ");
 console.log("Năm xuất bản: " + year);
+console.log("Tuổi sách: " + (2026 - year));
 
 let price = prompt("Nhập giá trị sách: ");
-console.log("Giá tiền của 1 cuốn: " + price);
+console.log(`Giá tiền của 1 cuốn: ${price} VNĐ`);
 
-let suggest = prompt("Nhập ngăn kệ gợi ý: ");
-console.log("Ngăn kệ gợi ý: " + suggest);
+let bookId = `${author.slice(0, 3)}${year}-${Math.floor(Math.random() * 1000) + 1}`;
+console.log("Mã sách: " + bookId);
+
+console.log("Ngăn kệ gợi ý: " + (Math.floor(Math.random() * 10) + 1));
