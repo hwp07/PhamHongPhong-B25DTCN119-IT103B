@@ -1,5 +1,5 @@
 let userName = prompt("Nhập tên người dùng:");
-let role = prompt("Nhập vai trò (admin / student / guest):")?.toLowerCase();
+let role = prompt("Nhập vai trò (admin / student / guest):").toLowerCase();
 let balance = +prompt("Nhập số dư tài khoản thẻ:");
 let cardStatusInput = prompt("Nhập trạng thái thẻ (true nếu hoạt động):");
 let overdueDays = +prompt("Nhập số ngày quá hạn trả sách:");
