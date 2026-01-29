@@ -61,7 +61,7 @@ if (overdueDays <= 0) {
 
 console.log(`--- HỆ THỐNG MƯỢN TRẢ ---
 
-Người dùng: ${userName?.toUpperCase() || "KHÔNG XÁC ĐỊNH"}
+Người dùng: ${userName.toUpperCase() || "KHÔNG XÁC ĐỊNH"}
 
 Quyền hạn: ${roleMsg}
 
