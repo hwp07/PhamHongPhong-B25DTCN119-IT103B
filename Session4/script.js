@@ -88,7 +88,7 @@ if (!loggedIn) {
         for (let year = 1; year <= years; year++) {
           let totalCost = quantity * cost;
           console.log(`Năm ${year}: Tổng phí = ${totalCost.toFixed(2)}`);
-          cost *= 1.1; // tăng 10%
+          cost *= 1.1;
         }
         break;
 
