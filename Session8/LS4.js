@@ -8,4 +8,10 @@ const players = [
   "Alisson - Goalkeeper - 0",
 ];
 
-function getReversedNames(players) {}
+function getReversedNames(players) {
+  return players
+    .map((player) => player.split(" - ").reverse().join(" - "))
+    .join("\n");
+}
+
+console.log(getReversedNames(players));
