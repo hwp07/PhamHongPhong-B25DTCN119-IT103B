@@ -1,5 +1,5 @@
 let orders = [
-  "Đơn  hàng A",
+  "Đơn hàng A",
   "Đơn hàng B",
   "Đơn hàng C",
   "Đơn hàng D",
@@ -7,13 +7,12 @@ let orders = [
 ];
 let revenues = [1500, 2800, 1200, -500, 3200];
 
-orderReports.map((orders, index) => {
-  return console.log(`${orders} mang về ${revenues[i]} USD`);
+let orderReports = orders.map((order, index) => {
+  return `${order} mang về ${revenues[index]} USD`;
 });
+orderReports.forEach((report) => console.log(report));
 
-let check = revenues.filter((value) => value > 0);
-let total = check.reduce((acc, value) => {
-  acc += value;
-  return acc;
-}, 0);
-console.log(`Tổng doanh thu: ${total}`);
+let check = revenues
+  .filter((value) => value > 0)
+  .reduce((acc, value) => acc + value, 0);
+console.log(`Tổng doanh thu: ${check}`);
