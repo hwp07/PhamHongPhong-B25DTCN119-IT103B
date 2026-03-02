@@ -1,4 +1,4 @@
-// In-memory database
+
 let students = [
   {
     id: "S001",
