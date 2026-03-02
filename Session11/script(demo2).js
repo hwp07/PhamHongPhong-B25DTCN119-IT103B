@@ -1,7 +1,7 @@
 let studentList = [
   { id: 1, name: "Nguyen Van A", age: 18, gpa: 6.66, status: "active" },
-  { id: 2, name: "Nguyen Van b", age: 19, gpa: 8.66, status: "active" },
-  { id: 3, name: "Nguyen Van c", age: 18, gpa: 9.66, status: "active" },
+  { id: 2, name: "Nguyen Van B", age: 19, gpa: 8.66, status: "active" },
+  { id: 3, name: "Nguyen Van C", age: 18, gpa: 9.66, status: "active" },
 ];
 
 const showMenu = () => {
@@ -17,38 +17,40 @@ const showMenu = () => {
 0.Exit`);
 };
 
-// case 1
+// CASE 1 - CREATE
 const createdStudent = () => {
   let name = prompt("Enter name:");
   if (!isNaN(name) || name.trim() === "") return alert("Error name!");
 
   let age = parseInt(prompt("Enter age:"));
-  if (age < 0 || age > 100) return alert("Error age!");
+  if (isNaN(age) || age < 0 || age > 100) return alert("Error age!");
 
   let gpa = parseFloat(prompt("Enter GPA (0.0 - 10.0):"));
-  if (gpa < 0 || gpa > 10) return alert("Error GPA!");
+  if (isNaN(gpa) || gpa < 0 || gpa > 10) return alert("Error GPA!");
 
   let status = prompt("Enter status (active/inactive):");
   if (status !== "active" && status !== "inactive")
     return alert("Error status!");
 
   let newStudent = {
-    id: studentList.length > 0 ? studentList[studentList.length - 1].id + 1 : 1,
-    name: name,
-    age: age,
-    gpa: gpa,
-    status: status,
+    id: studentList.length ? studentList[studentList.length - 1].id + 1 : 1,
+    name,
+    age,
+    gpa,
+    status,
   };
 
   studentList.push(newStudent);
 
   alert(
-    `Successfully added student!\n${newStudent.id} | ${newStudent.name} | ${newStudent.age} | ${newStudent.gpa} | ${newStudent.status}`,
+    `Successfully added!\n${newStudent.id} | ${newStudent.name} | ${newStudent.age} | ${newStudent.gpa} | ${newStudent.status}`,
   );
 };
 
-// case 2
+// CASE 2 - READ
 const readAllStudent = () => {
+  if (studentList.length === 0) return alert("Empty list!");
+
   let info = studentList
     .map(
       (student) =>
@@ -59,14 +61,11 @@ const readAllStudent = () => {
   alert(info);
 };
 
-// case 3
+// CASE 3
 const filterScholarshipCandidates = () => {
   let filter = studentList.filter((student) => student.gpa > 8.0);
 
-  if (filter.length === 0) {
-    alert("Error list!");
-    return;
-  }
+  if (filter.length === 0) return alert("No scholarship students!");
 
   let listStudent = filter
     .map(
@@ -78,78 +77,108 @@ const filterScholarshipCandidates = () => {
   alert(listStudent);
 };
 
-// case 4
+// CASE 4
 const updateProfile = () => {
-  let input = parseInt(prompt("Enter the ID want to update:"));
+  let input = parseInt(prompt("Enter ID to update:"));
 
   let findStudent = studentList.find((student) => student.id === input);
 
-  if (!findStudent) {
-    alert("Student not found!");
-    return;
-  }
+  if (!findStudent) return alert("Student not found!");
 
-  findStudent.name = prompt("Enter the new name:", findStudent.name);
+  findStudent.name = prompt("Enter new name:", findStudent.name);
 
-  let newGpa = parseFloat(
-    prompt(`Enter the new GPA (the old GPA: ${findStudent.gpa})`),
-  );
+  let newGpa = parseFloat(prompt(`Enter new GPA (old: ${findStudent.gpa})`));
 
-  if (newGpa < 0 || newGpa > 10) return alert("Error GPA!");
+  if (isNaN(newGpa) || newGpa < 0 || newGpa > 10) return alert("Error GPA!");
 
   findStudent.gpa = newGpa;
 
   alert("Update successfully!");
 };
+
+// CASE 5
+const deleteRecord = () => {
+  let deleteId = Number(prompt("Enter ID to delete:"));
+
+  let index = studentList.findIndex((student) => student.id === deleteId);
+
+  if (index !== -1) {
+    studentList.splice(index, 1);
+    alert("Delete successfully!");
+  } else {
+    alert("Student not found!");
+  }
+};
+
+// CASE 6
+const complianceVerification = () => {
+  let under18 = studentList.some((std) => std.age < 18);
+  console.log("Có sinh viên dưới 18 tuổi không?", under18);
+
+  let firstStatus = studentList[0]?.status;
+
+  let isUniformStatus = studentList.every((std) => std.status === firstStatus);
+
+  console.log("Tất cả có cùng trạng thái không?", isUniformStatus);
+};
+
+// CASE 7
+const academicStatistics = () => {
+  if (studentList.length === 0) return console.log("Empty list!");
+
+  let totalGpa = studentList.reduce((sum, std) => sum + std.gpa, 0);
+
+  let average = totalGpa / studentList.length;
+
+  console.log("Điểm Trung Bình:", average.toFixed(2));
+};
+
+// CASE 8
+const dataNormalization = () => {
+  let normalizedList = studentList.map((student) => ({
+    ...student,
+    name: student.name.toUpperCase(),
+  }));
+
+  console.log("Mảng gốc:", studentList);
+  console.log("Mảng chuẩn hóa:", normalizedList);
+};
+
 const main = () => {
   let condition = true;
+
   while (condition) {
     switch (showMenu()) {
-      case 1: {
+      case 1:
         createdStudent();
         break;
-      }
-
-      case 2: {
+      case 2:
         readAllStudent();
         break;
-      }
-
-      case 3: {
+      case 3:
         filterScholarshipCandidates();
         break;
-      }
-
-      case 1: {
+      case 4:
+        updateProfile();
         break;
-      }
-
-      case 1: {
+      case 5:
+        deleteRecord();
         break;
-      }
-
-      case 1: {
+      case 6:
+        complianceVerification();
         break;
-      }
-
-      case 1: {
+      case 7:
+        academicStatistics();
         break;
-      }
-
-      case 1: {
+      case 8:
+        dataNormalization();
         break;
-      }
-
-      case 0: {
-        alert(`See you later!`);
+      case 0:
+        alert("See you later!");
         condition = false;
         break;
-      }
-
-      default: {
-        alert(`Lua chon khong hop le!!!`);
-        break;
-      }
+      default:
+        alert("Lựa chọn không hợp lệ!");
     }
   }
 };

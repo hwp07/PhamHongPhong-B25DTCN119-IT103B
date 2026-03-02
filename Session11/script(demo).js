@@ -43,10 +43,10 @@ while (choice !== 0) {
       });
       break;
     case 3:
-      let checkgpa = studentList.filter((std) => {
+      let checkGpa = studentList.filter((std) => {
         return std.gpa > 8.0;
       });
-      console.table(checkgpa);
+      console.table(checkGpa);
       break;
     case 4:
       let update = Number(prompt("nhập Id cần cập nhật"));
@@ -61,7 +61,7 @@ while (choice !== 0) {
       break;
     case 5:
       let Delete = Number(prompt("mời bạn nhập Id để xóa "));
-      let index = studentList.findIndex((studen) => studen.id === Delete);
+      let index = studentList.findIndex((student) => student.id === Delete);
       if (index !== -1) {
         studentList.splice(index, 1);
         console.log("xóa sinh viên thành công !");
@@ -86,8 +86,8 @@ while (choice !== 0) {
       let totalGpa = studentList.reduce((sum, ptd) => {
         return sum + std.gpa;
       }, 0);
-      let trungbinh = totalGpa / studentList.length;
-      console.log("Điểm Trung Bình: ", trungbinh);
+      let result = totalGpa / studentList.length;
+      console.log("Điểm Trung Bình: ", result);
       break;
     case 8:
       let listName = studentList.map((name) => name.toUpperCase());
