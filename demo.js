@@ -51,7 +51,7 @@ form.addEventListener("submit", function (e) {
 });
 
 const products = [
-  { id: 1, name: "Bánh Chung", price: 150000 },
+  { id: 1, name: "Bánh Chung", price: 15000 },
   { id: 2, name: "Giò Lụa", price: 180000 },
   { id: 3, name: "Cánh Đào", price: 500000 },
   { id: 4, name: "Mứt Tết", price: 120000 },
@@ -65,5 +65,3 @@ products.forEach((product) => {
   li.innerText = `${product.name} - ${product.price.toLocaleString()} VND`;
   list.appendChild(li);
 });
-
-// update
