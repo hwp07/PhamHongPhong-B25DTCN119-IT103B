@@ -80,6 +80,7 @@ const filterScholarshipCandidates = () => {
 // CASE 4
 const updateProfile = () => {
   let input = parseInt(prompt("Enter ID to update:"));
+<<<<<<< HEAD
   if (isNaN(input)) return alert("Invalid ID!");
 
   let findStudent = studentList.find((student) => student.id === input);
@@ -91,6 +92,17 @@ const updateProfile = () => {
   }
 
   let newGpa = parseFloat(prompt(`Enter new GPA (old: ${findStudent.gpa})`));
+=======
+
+  let findStudent = studentList.find((student) => student.id === input);
+
+  if (!findStudent) return alert("Student not found!");
+
+  findStudent.name = prompt("Enter new name:", findStudent.name);
+
+  let newGpa = parseFloat(prompt(`Enter new GPA (old: ${findStudent.gpa})`));
+
+>>>>>>> ea34099f53489974fb8c1e6af8060b8244db0e51
   if (isNaN(newGpa) || newGpa < 0 || newGpa > 10) return alert("Error GPA!");
 
   findStudent.gpa = newGpa;
@@ -104,6 +116,7 @@ const deleteRecord = () => {
 
   let index = studentList.findIndex((student) => student.id === deleteId);
 
+<<<<<<< HEAD
   if (index === -1) {
     alert("Student not found!");
     return;
@@ -119,6 +132,13 @@ Name: ${studentList[index].name}?`,
     alert("Delete successfully!");
   } else {
     alert("Delete cancelled!");
+=======
+  if (index !== -1) {
+    studentList.splice(index, 1);
+    alert("Delete successfully!");
+  } else {
+    alert("Student not found!");
+>>>>>>> ea34099f53489974fb8c1e6af8060b8244db0e51
   }
 };
 
@@ -127,7 +147,11 @@ const complianceVerification = () => {
   let under18 = studentList.some((std) => std.age < 18);
   console.log("Có sinh viên dưới 18 tuổi không?", under18);
 
+<<<<<<< HEAD
   let firstStatus = studentList[0].status;
+=======
+  let firstStatus = studentList[0]?.status;
+>>>>>>> ea34099f53489974fb8c1e6af8060b8244db0e51
 
   let isUniformStatus = studentList.every((std) => std.status === firstStatus);
 
@@ -135,6 +159,7 @@ const complianceVerification = () => {
 };
 
 // CASE 7
+<<<<<<< HEAD
 const academicStats = () => {
   let total = studentList.length;
   let sum = studentList.reduce((acc, s) => acc + s.gpa, 0);
@@ -149,11 +174,25 @@ Total GPA sum  : ${sum.toFixed(2)}
 Average GPA    : ${avg}
 Highest GPA: ${max.name} (${max.gpa})
 Lowest GPA : ${min.name} (${min.gpa})`);
+=======
+const academicStatistics = () => {
+  if (studentList.length === 0) return console.log("Empty list!");
+
+  let totalGpa = studentList.reduce((sum, std) => sum + std.gpa, 0);
+
+  let average = totalGpa / studentList.length;
+
+  console.log("Điểm Trung Bình:", average.toFixed(2));
+>>>>>>> ea34099f53489974fb8c1e6af8060b8244db0e51
 };
 
 // CASE 8
 const dataNormalization = () => {
   let normalizedList = studentList.map((student) => ({
+<<<<<<< HEAD
+=======
+    ...student,
+>>>>>>> ea34099f53489974fb8c1e6af8060b8244db0e51
     name: student.name.toUpperCase(),
   }));
 

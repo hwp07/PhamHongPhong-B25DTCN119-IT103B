@@ -52,6 +52,7 @@ if (check1) {
   console.log(`Dữ liệu bảng giá hợp lệ`);
 }
 
+<<<<<<< HEAD
 function formatCatalog(products) {
   let catalogDisplay = products.map((product) => {
     let status = product.inStock ? "Còn hàng" : "Hết hàng";
@@ -64,3 +65,17 @@ function formatCatalog(products) {
 
 let result = formatCatalog(products);
 console.log(result);
+=======
+function catalogDisplay(products) {
+  if (products.inStock) {
+    return `Còn hàng`;
+  } else {
+    return `Hết hàng`;
+  }
+
+  products.map((value) => {
+    return `${value.name} - Giá: ${value.price}$ | Trạng thái: ${value.inStock}`;
+  });
+}
+catalogDisplay(products);
+>>>>>>> ea34099f53489974fb8c1e6af8060b8244db0e51
