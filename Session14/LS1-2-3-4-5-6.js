@@ -102,7 +102,7 @@ searchBtn.addEventListener("click", function () {
 // bài 6: sắp xếp theo giá
 function handleSort(type) {
   let sorted = products.sort((a, b) => {
-    return type === "asc" ? a.price - b.price : b.price - a.price;
+    return type === "sortAsc" ? a.price - b.price : b.price - a.price;
   });
 
   showList(sorted);
