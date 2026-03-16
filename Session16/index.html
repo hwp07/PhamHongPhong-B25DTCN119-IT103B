@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>Quản Lý Nhân Viên</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./style.css" />
   </head>
 
   <body>
@@ -13,49 +13,44 @@
         <h1>Quản Lý Nhân Viên</h1>
       </header>
 
+      <!-- FORM NHẬP NHÂN VIÊN -->
       <section class="form-section">
         <form>
           <div class="form-grid">
             <div class="form-group">
-              <label for="fullName"
-                >Họ và tên <span class="required">*</span></label
-              >
-              <input
-                type="text"
-                id="fullName"
-                name="fullName"
-                placeholder="Nhập họ và tên"
-              />
+              <label for="fullName">
+                Họ và tên <span class="required">*</span>
+              </label>
+              <input type="text" id="fullName" placeholder="Nhập họ và tên" />
+              <small class="error" id="fullNameError"></small>
             </div>
 
             <div class="form-group">
-              <label for="email">Email <span class="required">*</span></label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="vd: ten@gmail.com"
-              />
+              <label for="email"> Email <span class="required">*</span> </label>
+              <input type="email" id="email" placeholder="vd: ten@gmail.com" />
+              <small class="error" id="emailError"></small>
             </div>
 
             <div class="form-group">
-              <label for="dateOfBirth"
-                >Ngày sinh <span class="required">*</span></label
-              >
-              <input type="date" id="dateOfBirth" name="dateOfBirth" />
+              <label for="dateOfBirth">
+                Ngày sinh <span class="required">*</span>
+              </label>
+              <input type="date" id="dateOfBirth" />
+              <small class="error" id="dateError"></small>
             </div>
 
             <div class="form-group">
-              <label for="position"
-                >Chức vụ <span class="required">*</span></label
-              >
-              <select id="position" name="position">
+              <label for="position">
+                Chức vụ <span class="required">*</span>
+              </label>
+              <select id="position">
                 <option value="">-- Chọn chức vụ --</option>
                 <option value="Nhân viên">Nhân viên</option>
                 <option value="Trưởng nhóm">Trưởng nhóm</option>
                 <option value="Trưởng phòng">Trưởng phòng</option>
                 <option value="Giám đốc">Giám đốc</option>
               </select>
+              <small class="error" id="positionError"></small>
             </div>
           </div>
 
@@ -63,18 +58,24 @@
             <button type="submit" class="btn btn-primary">
               Thêm Nhân Viên
             </button>
-            <button type="reset" class="btn btn-secondary">Nhập Lại</button>
+
+            <!-- Nút dùng cho chức năng Hủy chỉnh sửa -->
+            <button type="reset" class="btn btn-secondary" id="cancelEdit">
+              Nhập Lại
+            </button>
           </div>
         </form>
       </section>
 
+      <!-- DANH SÁCH NHÂN VIÊN -->
       <section class="table-section">
         <div class="table-header">
           <h2>Danh Sách Nhân Viên</h2>
-          <span class="badge">3 nhân viên</span>
+          <span class="badge" id="countEmployee">0 nhân viên</span>
         </div>
+
         <div class="table-wrapper">
-          <!-- <table>
+          <table>
             <thead>
               <tr>
                 <th>ID</th>
@@ -82,40 +83,23 @@
                 <th>Email</th>
                 <th>Ngày sinh</th>
                 <th>Chức vụ</th>
+                <th>Hành động</th>
               </tr>
             </thead>
+
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Nguyễn Văn A</td>
-                <td>a.nguyen@example.com</td>
-                <td>01/01/1995</td>
-                <td>Nhân viên</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Trần Thị B</td>
-                <td>b.tran@example.com</td>
-                <td>12/03/1993</td>
-                <td>Trưởng nhóm</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Lê Văn C</td>
-                <td>c.le@example.com</td>
-                <td>20/07/1990</td>
-                <td>Trưởng phòng</td>
-              </tr>
+              <!-- JS sẽ render nhân viên ở đây -->
             </tbody>
-          </table> -->
+          </table>
         </div>
       </section>
 
+      <!-- FOOTER -->
       <footer class="footer">
-        <span>Tổng số nhân viên: 3</span>
+        <span id="totalEmployee">Tổng số nhân viên: 0</span>
       </footer>
     </div>
 
-    <script src="demo.js"></script>
+    <script src="./demo.js"></script>
   </body>
 </html>
