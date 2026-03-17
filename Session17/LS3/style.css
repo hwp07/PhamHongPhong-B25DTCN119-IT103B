@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #f4f1ea;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+}
+
+.container {
+    width: 700px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    background: #c62828;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+header p {
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+main {
+    padding: 25px;
+}
+
+.search {
+    background-color: #FDFFE8;
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    outline: none;
+}
+
+.search button {
+    background-color: #F67D01;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 16px 20px;
+    margin-bottom: 14px;
+
+    background: #FDFFE8;
+    border-left: 6px solid #f77f00;
+    border-radius: 10px;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.todo-item:hover {
+    transform: scale(1.02);
+}
+
+.circle {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid #aaa;
+}
+
+.task {
+    flex: 1;
+}
+
+.todo-item.done {
+    background: #d7e6da;
+    border-left: 6px solid #4caf50;
+}
+
+.todo-item.done .task {
+    text-decoration: line-through;
+    color: #555;
+}
+
+.todo-item.done .circle {
+    background: #4caf50;
+    border: none;
+}
+
+.todo-item.done .circle::after {
+    content: "✓";
+    color: white;
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+    padding: 16px;
+    font-size: 13px;
+    color: #777;
+    background: #f3f3f3;
+}
