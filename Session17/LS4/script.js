@@ -46,7 +46,7 @@ function renderTodos() {
 }
 
 todoList.addEventListener("click", function (e) {
-  // xóa ták
+  // xóa task
   if (e.target.classList.contains("delete")) {
     if (!confirm("Bạn có chắc chắn muốn xóa nhiệm vụ?")) return;
 
