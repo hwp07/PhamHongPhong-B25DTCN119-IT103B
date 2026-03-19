@@ -1,290 +1,242 @@
-// LocalStorage key
 const STORAGE_KEY = "products_data";
 
-// Mảng lưu trữ danh sách sản phẩm
 let products = [];
 let productIdCounter = 1;
 let editingProductId = null;
 
-// Lấy các phần tử DOM
-const productForm = document.getElementById("productForm");
+const form = document.getElementById("productForm");
+const nameInput = document.getElementById("productName");
+const categoryInput = document.getElementById("productCategory");
+const priceInput = document.getElementById("productPrice");
+const quantityInput = document.getElementById("productQuantity");
+const descInput = document.getElementById("productDescription");
+
+const tableBody = document.getElementById("productTableBody");
+const emptyState = document.getElementById("emptyState");
+
+const searchInput = document.getElementById("searchInput");
+const filterCategory = document.getElementById("filterCategory");
+
 const formTitle = document.getElementById("formTitle");
 const submitBtn = document.getElementById("submitBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 const clearAllBtn = document.getElementById("clearAllBtn");
 
-const productName = document.getElementById("productName");
-const productCategory = document.getElementById("productCategory");
-const productPrice = document.getElementById("productPrice");
-const productQuantity = document.getElementById("productQuantity");
-const productDescription = document.getElementById("productDescription");
-
-const searchInput = document.getElementById("searchInput");
-const filterCategory = document.getElementById("filterCategory");
-
-const productTableBody = document.getElementById("productTableBody");
-const emptyState = document.getElementById("emptyState");
 const totalProducts = document.getElementById("totalProducts");
 const totalValue = document.getElementById("totalValue");
 const totalQuantity = document.getElementById("totalQuantity");
 
-// ===== LOCALSTORAGE FUNCTIONS =====
-
-// Lưu dữ liệu vào localStorage
-function saveToLocalStorage() {
+function saveData() {
   localStorage.setItem(
     STORAGE_KEY,
     JSON.stringify({
-      products: products,
+      products,
       idCounter: productIdCounter,
     }),
   );
 }
 
-// Load dữ liệu từ localStorage
-function loadFromLocalStorage() {
+function loadData() {
   const data = localStorage.getItem(STORAGE_KEY);
-  if (data) {
-    try {
-      const parsed = JSON.parse(data);
-      products = parsed.products || [];
-      productIdCounter = parsed.idCounter || 1;
-    } catch (e) {
-      console.error("Error loading data from localStorage:", e);
-      products = [];
-      productIdCounter = 1;
-    }
-  }
-}
+  if (!data) return;
 
-// Xóa tất cả dữ liệu
-function clearAllData() {
-  const confirm = window.confirm(
-    "Bạn có chắc chắn muốn xóa TẤT CẢ sản phẩm? Hành động này không thể hoàn tác!",
-  );
-  if (confirm) {
+  try {
+    const parsed = JSON.parse(data);
+    products = parsed.products || [];
+    productIdCounter = parsed.idCounter || 1;
+  } catch (err) {
+    console.error("Lỗi load data:", err);
     products = [];
     productIdCounter = 1;
-    saveToLocalStorage();
-    renderProducts();
-    updateStats();
-    alert("Đã xóa tất cả sản phẩm!");
   }
 }
 
-// ===== KHỞI TẠO ỨNG DỤNG =====
+function addProduct(data) {
+  const newProduct = {
+    id: productIdCounter++,
+    ...data,
+    createdAt: new Date().toISOString(),
+  };
 
-function init() {
-  loadFromLocalStorage();
-  renderProducts();
-  updateStats();
-
-  // Event listeners
-  productForm.addEventListener("submit", handleFormSubmit);
-  cancelBtn.addEventListener("click", cancelEdit);
-  clearAllBtn.addEventListener("click", clearAllData);
-  searchInput.addEventListener("input", handleSearch);
-  filterCategory.addEventListener("change", handleFilter);
+  products.push(newProduct);
 }
 
-// ===== FORM HANDLING =====
+function updateProduct(id, data) {
+  const p = products.find((item) => item.id === id);
+  if (!p) return;
 
-function handleFormSubmit(e) {
+  Object.assign(p, data);
+  p.updatedAt = new Date().toISOString();
+}
+
+function deleteProduct(id) {
+  const p = products.find((item) => item.id === id);
+  if (!p) return;
+
+  if (!confirm(`Bạn có chắc muốn xóa "${p.name}"?`)) return;
+
+  products = products.filter((item) => item.id !== id);
+
+  if (editingProductId === id) resetForm();
+
+  saveData();
+  render();
+  updateStats();
+}
+
+form.addEventListener("submit", function (e) {
   e.preventDefault();
 
-  // Lấy dữ liệu từ form
-  const name = productName.value.trim();
-  const category = productCategory.value;
-  const price = parseFloat(productPrice.value);
-  const quantity = parseInt(productQuantity.value);
-  const description = productDescription.value.trim();
+  const data = {
+    name: nameInput.value.trim(),
+    category: categoryInput.value,
+    price: parseFloat(priceInput.value),
+    quantity: parseInt(quantityInput.value),
+    description: descInput.value.trim(),
+  };
 
-  // Validate
-  if (!name || !category || isNaN(price) || isNaN(quantity)) {
+  if (
+    !data.name ||
+    !data.category ||
+    isNaN(data.price) ||
+    isNaN(data.quantity)
+  ) {
     alert("Vui lòng điền đầy đủ thông tin!");
     return;
   }
 
-  if (price < 0) {
+  if (data.price < 0) {
     alert("Giá không được âm!");
     return;
   }
 
-  if (quantity < 0) {
+  if (data.quantity < 0) {
     alert("Số lượng không được âm!");
     return;
   }
 
   if (editingProductId) {
-    // Cập nhật sản phẩm
-    updateProduct(
-      editingProductId,
-      name,
-      category,
-      price,
-      quantity,
-      description,
-    );
+    updateProduct(editingProductId, data);
   } else {
-    // Thêm sản phẩm mới
-    addProduct(name, category, price, quantity, description);
+    addProduct(data);
   }
 
-  // Reset form
-  resetForm();
-}
-
-// ===== CRUD OPERATIONS =====
-
-// Thêm sản phẩm mới
-function addProduct(name, category, price, quantity, description) {
-  const newProduct = {
-    id: productIdCounter++,
-    name: name,
-    category: category,
-    price: price,
-    quantity: quantity,
-    description: description,
-    createdAt: new Date().toISOString(),
-  };
-
-  products.push(newProduct);
-  saveToLocalStorage();
-  renderProducts();
+  saveData();
+  render();
   updateStats();
-}
+  resetForm();
+});
 
-// Cập nhật sản phẩm
-function updateProduct(id, name, category, price, quantity, description) {
-  const product = products.find((p) => p.id === id);
-  if (product) {
-    product.name = name;
-    product.category = category;
-    product.price = price;
-    product.quantity = quantity;
-    product.description = description;
-    product.updatedAt = new Date().toISOString();
-
-    saveToLocalStorage();
-    renderProducts();
-    updateStats();
-  }
-}
-
-// Xóa sản phẩm
-function deleteProduct(id) {
-  const product = products.find((p) => p.id === id);
-  if (!product) return;
-
-  const confirmDelete = confirm(
-    `Bạn có chắc chắn muốn xóa sản phẩm "${product.name}"?`,
-  );
-
-  if (confirmDelete) {
-    products = products.filter((p) => p.id !== id);
-    saveToLocalStorage();
-    renderProducts();
-    updateStats();
-
-    // Nếu đang sửa sản phẩm này thì reset form
-    if (editingProductId === id) {
-      resetForm();
-    }
-  }
-}
-
-// Sửa sản phẩm
 function editProduct(id) {
-  const product = products.find((p) => p.id === id);
-  if (!product) return;
+  const p = products.find((item) => item.id === id);
+  if (!p) return;
 
-  // Điền dữ liệu vào form
-  productName.value = product.name;
-  productCategory.value = product.category;
-  productPrice.value = product.price;
-  productQuantity.value = product.quantity;
-  productDescription.value = product.description || "";
+  nameInput.value = p.name;
+  categoryInput.value = p.category;
+  priceInput.value = p.price;
+  quantityInput.value = p.quantity;
+  descInput.value = p.description || "";
 
-  // Cập nhật UI
+  editingProductId = id;
+
   formTitle.textContent = "Chỉnh Sửa Sản Phẩm";
   submitBtn.innerHTML = "💾 Cập Nhật";
   cancelBtn.style.display = "block";
 
-  // Lưu ID đang chỉnh sửa
-  editingProductId = id;
-
-  // Scroll to form
   document
     .querySelector(".form-section")
     .scrollIntoView({ behavior: "smooth" });
-  productName.focus();
 }
 
-// Hủy chỉnh sửa
-function cancelEdit() {
-  resetForm();
-}
-
-// Reset form
 function resetForm() {
-  productForm.reset();
+  form.reset();
+  editingProductId = null;
+
   formTitle.textContent = "Thêm Sản Phẩm Mới";
   submitBtn.innerHTML = "➕ Thêm Sản Phẩm";
   cancelBtn.style.display = "none";
-  editingProductId = null;
 }
 
-// ===== RENDER & DISPLAY =====
+cancelBtn.addEventListener("click", resetForm);
 
-// Render danh sách sản phẩm
-function renderProducts(filteredProducts = null) {
-  const productsToRender = filteredProducts || products;
+clearAllBtn.addEventListener("click", function () {
+  if (!confirm("Bạn có chắc muốn xóa TẤT CẢ?")) return;
 
-  productTableBody.innerHTML = "";
+  products = [];
+  productIdCounter = 1;
 
-  if (productsToRender.length === 0) {
+  saveData();
+  render();
+  updateStats();
+});
+
+function render(list = products) {
+  tableBody.innerHTML = "";
+
+  if (list.length === 0) {
     emptyState.classList.add("show");
     return;
   }
 
   emptyState.classList.remove("show");
 
-  productsToRender.forEach((product) => {
-    const row = createProductRow(product);
-    productTableBody.appendChild(row);
+  list.forEach((p) => {
+    const tr = document.createElement("tr");
+
+    const price = formatPrice(p.price);
+    const lowStock = p.quantity < 10 ? "low-stock" : "";
+
+    tr.innerHTML = `
+      <td>${p.id}</td>
+      <td><strong>${p.name}</strong></td>
+      <td>${p.category}</td>
+      <td>${price}</td>
+      <td class="${lowStock}">${p.quantity}</td>
+      <td>${p.description || "Không có mô tả"}</td>
+      <td>
+        <button onclick="editProduct(${p.id})">Sửa</button>
+        <button onclick="deleteProduct(${p.id})">Xóa</button>
+      </td>
+    `;
+
+    tableBody.appendChild(tr);
   });
 }
 
-// Tạo hàng trong bảng cho sản phẩm
-function createProductRow(product) {
-  const tr = document.createElement("tr");
+function filterData() {
+  let result = [...products];
 
-  const priceFormatted = formatPrice(product.price);
-  const quantityClass = product.quantity < 10 ? "low-stock" : "";
+  const keyword = searchInput.value.toLowerCase().trim();
+  const category = filterCategory.value;
 
-  tr.innerHTML = `
-        <td>${product.id}</td>
-        <td><strong>${product.name}</strong></td>
-        <td>${product.category}</td>
-        <td class="price">${priceFormatted}</td>
-        <td class="quantity ${quantityClass}">${product.quantity}</td>
-        <td class="description">${product.description || "Không có mô tả"}</td>
-        <td>
-            <div class="action-buttons">
-                <button class="btn-edit" onclick="editProduct(${product.id})">
-                    ✏️ Sửa
-                </button>
-                <button class="btn-delete" onclick="deleteProduct(${product.id})">
-                    🗑️ Xóa
-                </button>
-            </div>
-        </td>
-    `;
+  if (keyword) {
+    result = result.filter(
+      (p) =>
+        p.name.toLowerCase().includes(keyword) ||
+        p.description.toLowerCase().includes(keyword),
+    );
+  }
 
-  return tr;
+  if (category) {
+    result = result.filter((p) => p.category === category);
+  }
+
+  render(result);
 }
 
-// Format giá tiền
+searchInput.addEventListener("input", filterData);
+filterCategory.addEventListener("change", filterData);
+
+function updateStats() {
+  totalProducts.textContent = products.length;
+
+  const total = products.reduce((sum, p) => sum + p.price * p.quantity, 0);
+  totalValue.textContent = formatPrice(total);
+
+  const qty = products.reduce((sum, p) => sum + p.quantity, 0);
+  totalQuantity.textContent = qty;
+}
+
 function formatPrice(price) {
   return new Intl.NumberFormat("vi-VN", {
     style: "currency",
@@ -292,49 +244,10 @@ function formatPrice(price) {
   }).format(price);
 }
 
-// ===== SEARCH & FILTER =====
-
-function handleSearch() {
-  const searchTerm = searchInput.value.toLowerCase().trim();
-  const categoryFilter = filterCategory.value;
-
-  let filtered = products;
-
-  // Filter by search term
-  if (searchTerm) {
-    filtered = filtered.filter(
-      (p) =>
-        p.name.toLowerCase().includes(searchTerm) ||
-        p.description.toLowerCase().includes(searchTerm),
-    );
-  }
-
-  // Filter by category
-  if (categoryFilter) {
-    filtered = filtered.filter((p) => p.category === categoryFilter);
-  }
-
-  renderProducts(filtered);
+function init() {
+  loadData();
+  render();
+  updateStats();
 }
 
-function handleFilter() {
-  handleSearch(); // Sử dụng lại logic search
-}
-
-// ===== STATISTICS =====
-
-function updateStats() {
-  // Tổng số sản phẩm
-  totalProducts.textContent = products.length;
-
-  // Tổng giá trị
-  const total = products.reduce((sum, p) => sum + p.price * p.quantity, 0);
-  totalValue.textContent = formatPrice(total);
-
-  // Tổng số lượng
-  const quantity = products.reduce((sum, p) => sum + p.quantity, 0);
-  totalQuantity.textContent = quantity;
-}
-
-// ===== KHỞI CHẠY ỨNG DỤNG =====
 init();

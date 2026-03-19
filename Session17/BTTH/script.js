@@ -30,6 +30,7 @@ function renderProduct() {
 function addToCart(id) {
   const product = products.find((value) => value.id === id);
   cartList.push(product);
+  localStorage.setItem("ListCart", JSON.stringify(cartList));
   renderCart();
 }
 
@@ -74,5 +75,19 @@ function renderCart() {
   totalPriceEl.innerText = total.toLocaleString("vi-VN") + "đ";
 }
 
+// Thanh toán
+function pay() {
+  let btnCheckout = document.getElementById("btn-checkout");
+
+  btnCheckout.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    cartList = [];
+    renderCart();
+    localStorage.removeItem("ListCart");
+  });
+}
+
 renderProduct();
 renderCart();
+pay();
