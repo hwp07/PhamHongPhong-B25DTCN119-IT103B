@@ -1,27 +1,30 @@
-const cvList = ["Làm bài", "Chơi game"];
-const input = document.getElementById("taskInput");
-const list = document.getElementById("taskList");
-const add = document.querySelector("button");
-function add() {
-  const newList = input.value.trim();
-  if (newList === "") {
+let list = ["Quét nhà", "Giặt quần áo"];
+
+let taskInput = document.getElementById("taskInput");
+let taskList = document.getElementById("taskList");
+let button = document.querySelector("button");
+
+const showList = () => {
+  taskList.innerHTML = "";
+
+  list.forEach((task) => {
+    taskList.innerHTML += `
+      <li>${task}</li>
+    `;
+  });
+};
+
+showList();
+button.addEventListener("click", function () {
+  let newTask = taskInput.value.trim();
+
+  if (newTask === "") {
     alert("Vui lòng nhập tên công việc!");
     return;
   }
-  cvList.push(newList);
-  renderCv();
 
-  input.value = "";
-}
-function renderCv() {
-  list.innerHTML = "";
-  cvList.forEach((cv) => {
-    const newList = document.createElement("li");
-    newList.textContent = cv;
-    list.appendChild(newList);
-  });
-}
+  list.push(newTask);
 
-add.addEventListener("click", add);
-
-renderCv();
+  showList();
+  taskInput.value = "";
+});

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Todo list</h1>
+
+    <!-- Phan nhap lieu -->
+    <form action="" class="todo-form" id="form">
+      <div>
+        <input type="text" id="input-name" placeholder="Nhap cong viec" />
+        <p class="err-msg">Du lieu khong hop le</p>
+      </div>
+
+      <input type="date" name="" id="input-date" />
+      <select name="" id="input-opt">
+        <option value="">Trang thai cong viec</option>
+        <option value="Todo">Todo</option>
+        <option value="Pending">Pending</option>
+        <option value="Done">Done</option>
+      </select>
+      <button id="add-btn" onclick="addTodo(event)">Them cong viec</button>
+    </form>
+
+    <!-- Chuc nang (tim kiem, xap xep, loc) -->
+    <div>
+      <input
+        type="text"
+        id="search-todo"
+        placeholder="Nhap cong viec tim kiem"
+      />
+      <button onclick="searchTodo()">Tim kiem</button>
+
+      <select name="" id="filter-todo" onchange="filterTodoByStatus()">
+        <option value="">Loc theo trang thai</option>
+        <option value="Todo">Todo</option>
+        <option value="Pending">Pending</option>
+        <option value="Done">Done</option>
+      </select>
+    </div>
+
+    <!-- Hien thi -->
+    <table style="width: 500px" border="1px">
+      <tr>
+        <th>ID</th>
+        <th>To do <button onclick="sortByName()">Tang dan</button></th>
+        <th>Deadline</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+
+      <tbody style="width: 500px" border="1px" id="table-list">
+        <!-- <tr>
+        <td>1</td>
+        <td>Di choi</td>
+        <td>25/3</td>
+        <td>Done</td>
+      </tr>
+
+      <tr>
+        <td>2</td>
+        <td>Di hoc</td>
+        <td>30/4</td>
+        <td>Done</td>
+      </tr>
+
+      <tr>
+        <td>3</td>
+        <td>Game</td>
+        <td>22/2</td>
+        <td>Done</td>
+      </tr> -->
+      </tbody>
+    </table>
+
+    <script src="script.js"></script>
+  </body>
+</html>
